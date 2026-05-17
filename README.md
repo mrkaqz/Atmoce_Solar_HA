@@ -16,15 +16,15 @@ Try on your installation and please report any suggestion or issue at the reposi
 
 ## Features
 
-- **27 sensor entities** — grid, PV, battery, system and computed metrics
+- **24 sensor entities** — grid, PV, battery, system and computed metrics
 - **Full battery control** — force charge/discharge, set target SOC, duration and power
-- **"Administrado por batería" button** — one-tap return to automatic self-managed mode
+- **Battery Auto Mode button** — one-tap return to automatic self-managed mode
 - **Battery model selector** in setup — MS-7K-U pre-configured, manual entry for other models
 - **Automatic Modbus→Cloud fallback** (optional) if the gateway is temporarily unreachable
 - **Active data source sensor** — always know whether you are reading Modbus or Cloud
-- **Computed sensors** — autonomy hours, PV self-consumption rate, battery health
+- **Computed sensors** — autonomy hours, PV self-consumption rate
 - **Diagnostics support** — exportable debug info with sensitive fields redacted
-- **Bilingual** — English and Spanish UI out of the box
+- **Multilingual** — entity names and state labels are fully translatable; English and Spanish included out of the box
 
 ---
 
@@ -67,18 +67,17 @@ Try on your installation and please report any suggestion or issue at the reposi
 | `sensor.atmoce_pv_self_consumption_rate` | % | Solar consumed directly (computed) |
 | `sensor.atmoce_battery_soc` | % | State of charge |
 | `sensor.atmoce_battery_power` | W | Charge/discharge power |
-| `sensor.atmoce_battery_status` | — | charging / discharging / idle |
-| `sensor.atmoce_battery_operating_mode` | — | self_consumption / tou / remote_control |
+| `sensor.atmoce_battery_status` | — | Charging / Discharging / Idle |
+| `sensor.atmoce_battery_operating_mode` | — | Self-Consumption / Time of Use / Remote Control |
 | `sensor.atmoce_battery_dispatch_power` | W | Dispatch setpoint readback |
 | `sensor.atmoce_battery_charged_daily` | kWh | Charged today |
 | `sensor.atmoce_battery_discharged_daily` | kWh | Discharged today |
 | `sensor.atmoce_battery_charged_total` | kWh | Cumulative charged |
 | `sensor.atmoce_battery_discharged_total` | kWh | Cumulative discharged |
 | `sensor.atmoce_battery_autonomy` | h | Estimated hours of autonomy (computed) |
-| `sensor.atmoce_station_status` | — | normal / fault |
+| `sensor.atmoce_station_status` | — | Normal / Fault |
 | `sensor.atmoce_active_data_source` | — | Modbus / Cloud |
 | `sensor.atmoce_connection_errors` | — | Cumulative Modbus failures |
-| `binary_sensor.atmoce_battery_healthy` | — | False if battery appears stuck |
 
 ### Controls
 
@@ -89,9 +88,9 @@ Try on your installation and please report any suggestion or issue at the reposi
 | `number.atmoce_forced_duration` | Duration for forced operation (0–1440 min) |
 | `number.atmoce_forced_power` | Power for forced charge (0–max charge kW) |
 | `number.atmoce_dispatch_power` | Dispatch power setpoint in kW (negative = charge) |
-| `select.atmoce_battery_command` | Carga forzada / Descarga forzada / Administrado por batería |
-| `select.atmoce_forced_mode_type` | SOC objetivo / Duración / SOC + Duración |
-| `button.atmoce_administrado_por_bateria` | One-tap return to automatic mode |
+| `select.atmoce_battery_command` | Forced Charge / Forced Discharge / Battery Managed |
+| `select.atmoce_forced_mode_type` | Target SOC / Duration / SOC + Duration |
+| `button.atmoce_battery_auto_mode` | One-tap return to automatic mode |
 | `button.atmoce_reset_gateway` | Reset the Atmoce gateway |
 
 ---
@@ -123,12 +122,12 @@ automation:
         target:
           entity_id: select.atmoce_forced_mode_type
         data:
-          option: "SOC objetivo"
+          option: "target_soc"
       - service: select.select_option
         target:
           entity_id: select.atmoce_battery_command
         data:
-          option: "Carga forzada"
+          option: "forced_charge"
 
   - alias: "Atmoce — Return to auto when SOC reached"
     trigger:
@@ -138,7 +137,7 @@ automation:
     action:
       - service: button.press
         target:
-          entity_id: button.atmoce_administrado_por_bateria
+          entity_id: button.atmoce_battery_auto_mode
 ```
 
 ---
