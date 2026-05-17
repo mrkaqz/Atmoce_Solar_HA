@@ -7,6 +7,8 @@
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-orange.svg)](https://github.com/hacs/integration)
 [![GitHub release](https://img.shields.io/github/release/pacorola/Atmoce_battery_HA.svg)](https://github.com/pacorola/Atmoce_battery_HA/releases)
 
+> **Fork** of [pacorola/Atmoce_battery_HA](https://github.com/pacorola/Atmoce_battery_HA)
+
 Full local control and monitoring of **Atmoce solar + battery systems** via **Modbus TCP**, with an optional read-only Cloud API fallback.
 
 Tested with the **Atmoce MS-7K-U** (7 kWh LFP battery) and compatible with MC100, MC100-T and MG100 gateways. 
